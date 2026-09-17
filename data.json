@@ -1,0 +1,78 @@
+{
+  "contactLinks": [
+    { "label": "email — PLACEHOLDER", "href": "mailto:you@example.com" },
+    { "label": "github — PLACEHOLDER", "href": "https://github.com" }
+  ],
+  "entries": [
+    {
+      "id": "zipsnap",
+      "name": "ZipSnap",
+      "domain": "https://getzipsnap.com",
+      "tagline": "PLACEHOLDER — replace with the real one-liner.",
+      "description": "PLACEHOLDER full description. Swap this out with what ZipSnap actually does, who it's for, and why it exists.",
+      "section": "products",
+      "status": "live",
+      "type": "Chrome extension tool",
+      "stack": ["Chrome Extension APIs", "JavaScript"],
+      "launchDate": "2025",
+      "featured": false,
+      "hidden": false
+    },
+    {
+      "id": "vibecheck",
+      "name": "VibeCheck",
+      "domain": "https://vibecheckhq.app",
+      "tagline": "PLACEHOLDER — replace with the real one-liner.",
+      "description": "PLACEHOLDER full description for VibeCheck.",
+      "section": "products",
+      "status": "live",
+      "type": "SaaS",
+      "stack": ["Next.js", "Vercel"],
+      "launchDate": "2025",
+      "featured": false,
+      "hidden": false
+    },
+    {
+      "id": "no-crickets",
+      "name": "No Crickets",
+      "domain": "https://nocrickets.dev",
+      "tagline": "PLACEHOLDER — replace with the real one-liner.",
+      "description": "PLACEHOLDER full description for No Crickets.",
+      "section": "products",
+      "status": "live",
+      "type": "Dev tool",
+      "stack": ["Node.js"],
+      "launchDate": "2025",
+      "featured": false,
+      "hidden": false
+    },
+    {
+      "id": "claude-usage-widget",
+      "name": "Claude Usage Widget",
+      "domain": "https://theclaudeusagewidget.com",
+      "tagline": "PLACEHOLDER — replace with the real one-liner.",
+      "description": "PLACEHOLDER full description for Claude Usage Widget.",
+      "section": "products",
+      "status": "live",
+      "type": "",
+      "stack": [],
+      "launchDate": "",
+      "featured": false,
+      "hidden": false
+    },
+    {
+      "id": "niche-loop",
+      "name": "Niche Loop",
+      "domain": "",
+      "tagline": "PLACEHOLDER — replace with the real one-liner and domain once it has one.",
+      "description": "PLACEHOLDER full description for Niche Loop.",
+      "section": "experiments",
+      "status": "building",
+      "type": "",
+      "stack": [],
+      "launchDate": "",
+      "featured": false,
+      "hidden": false
+    }
+  ]
+}

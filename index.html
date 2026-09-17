@@ -937,7 +937,7 @@
 
 <div class="modal" id="publishModal" role="dialog" aria-modal="true">
   <h2>Publish changes</h2>
-  <p>Copy this, then paste it into a Claude Code chat and say <em>"update my Oliver's Products portfolio with this."</em> Claude will redeploy the page at this same link.</p>
+  <p>Copy this, then paste it into a Claude Code chat and say <em>"update data.json for my Oliver's Products site with this."</em> Claude will update that file and push — the site redeploys automatically.</p>
   <textarea class="publish-textarea" id="publishPayload" readonly></textarea>
   <div class="modal-actions">
     <button type="button" class="btn" id="publishCloseBtn">Close</button>
@@ -953,84 +953,10 @@
 
   var STORAGE_DRAFT_KEY = "olivers_products_draft_v1";
   var STORAGE_OWNER_KEY = "olivers_products_owner_v1";
+  var DATA_URL = "data.json";
 
-  var DEFAULT_ENTRIES = [
-    {
-      id: "zipsnap",
-      name: "ZipSnap",
-      domain: "https://getzipsnap.com",
-      tagline: "PLACEHOLDER — replace with the real one-liner.",
-      description: "PLACEHOLDER full description. Swap this out with what ZipSnap actually does, who it's for, and why it exists.",
-      section: "products",
-      status: "live",
-      type: "Chrome extension tool",
-      stack: ["Chrome Extension APIs", "JavaScript"],
-      launchDate: "2025",
-      featured: false,
-      hidden: false
-    },
-    {
-      id: "vibecheck",
-      name: "VibeCheck",
-      domain: "https://vibecheckhq.app",
-      tagline: "PLACEHOLDER — replace with the real one-liner.",
-      description: "PLACEHOLDER full description for VibeCheck.",
-      section: "products",
-      status: "live",
-      type: "SaaS",
-      stack: ["Next.js", "Vercel"],
-      launchDate: "2025",
-      featured: false,
-      hidden: false
-    },
-    {
-      id: "no-crickets",
-      name: "No Crickets",
-      domain: "https://nocrickets.dev",
-      tagline: "PLACEHOLDER — replace with the real one-liner.",
-      description: "PLACEHOLDER full description for No Crickets.",
-      section: "products",
-      status: "live",
-      type: "Dev tool",
-      stack: ["Node.js"],
-      launchDate: "2025",
-      featured: false,
-      hidden: false
-    },
-    {
-      id: "claude-usage-widget",
-      name: "Claude Usage Widget",
-      domain: "https://theclaudeusagewidget.com",
-      tagline: "PLACEHOLDER — replace with the real one-liner.",
-      description: "PLACEHOLDER full description for Claude Usage Widget.",
-      section: "products",
-      status: "live",
-      type: "",
-      stack: [],
-      launchDate: "",
-      featured: false,
-      hidden: false
-    },
-    {
-      id: "niche-loop",
-      name: "Niche Loop",
-      domain: "",
-      tagline: "PLACEHOLDER — replace with the real one-liner and domain once it has one.",
-      description: "PLACEHOLDER full description for Niche Loop.",
-      section: "experiments",
-      status: "building",
-      type: "",
-      stack: [],
-      launchDate: "",
-      featured: false,
-      hidden: false
-    }
-  ];
-
-  var DEFAULT_CONTACT_LINKS = [
-    { label: "email — PLACEHOLDER", href: "mailto:you@example.com" },
-    { label: "github — PLACEHOLDER", href: "https://github.com" }
-  ];
+  var DEFAULT_ENTRIES = [];
+  var DEFAULT_CONTACT_LINKS = [];
 
   var SECTIONS = [
     { key: "products", title: "Your products", note: "" },
@@ -1051,7 +977,7 @@
 
   function qs(id) { return document.getElementById(id); }
 
-  function loadEntries() {
+  function resolveOwnerMode() {
     var params = new URLSearchParams(window.location.search);
     var keyParam = params.get("key");
     var ownerFlag = false;
@@ -1064,15 +990,34 @@
       }
     } catch (e) {}
     state.isOwner = ownerFlag;
+  }
 
-    var entries = DEFAULT_ENTRIES;
-    if (state.isOwner) {
-      try {
-        var draft = localStorage.getItem(STORAGE_DRAFT_KEY);
-        if (draft) entries = JSON.parse(draft);
-      } catch (e) {}
-    }
-    state.entries = entries;
+  function loadData() {
+    resolveOwnerMode();
+    qs("sections").innerHTML = '<div class="empty-state">Loading…</div>';
+
+    return fetch(DATA_URL, { cache: "no-store" })
+      .then(function (res) {
+        if (!res.ok) throw new Error("data.json responded with " + res.status);
+        return res.json();
+      })
+      .then(function (data) {
+        DEFAULT_ENTRIES = data.entries || [];
+        DEFAULT_CONTACT_LINKS = data.contactLinks || [];
+
+        var entries = DEFAULT_ENTRIES;
+        if (state.isOwner) {
+          try {
+            var draft = localStorage.getItem(STORAGE_DRAFT_KEY);
+            if (draft) entries = JSON.parse(draft);
+          } catch (e) {}
+        }
+        state.entries = entries;
+      })
+      .catch(function (err) {
+        qs("sections").innerHTML = '<div class="empty-state">Couldn\'t load data.json (' + escapeHtml(err.message) + '). Make sure it\'s deployed alongside index.html.</div>';
+        throw err;
+      });
   }
 
   function saveDraft() {
@@ -1477,7 +1422,7 @@
   /* ---------- publish / backup ---------- */
 
   function buildPublishPayload() {
-    return JSON.stringify(state.entries, null, 2);
+    return JSON.stringify({ contactLinks: DEFAULT_CONTACT_LINKS, entries: state.entries }, null, 2);
   }
 
   function openPublish() {
@@ -1564,9 +1509,8 @@
     });
   }
 
-  loadEntries();
   bindEvents();
-  render();
+  loadData().then(render).catch(function () {});
 })();
 </script>
 </body>
