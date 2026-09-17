@@ -1,0 +1,1564 @@
+<title>Oliver's Products</title>
+<meta name="description" content="A field log of what Oliver Rutland has shipped — products, client work, and experiments, all in one place.">
+
+<style>
+  :root {
+    --bg: #0A1730;
+    --bg-raised: #11224A;
+    --bg-sunken: #071021;
+    --ink: #FFFFFF;
+    --ink-soft: #C7D0EA;
+    --ink-faint: #8792B8;
+    --line: #24345F;
+    --accent: #E8BB3D;
+    --accent-ink: #17213F;
+    --status-live: #5FBF77;
+    --status-building: #E2984D;
+    --status-paused: #8792B8;
+    --status-retired: #D9705A;
+    --shadow: 0 20px 50px -18px rgba(0, 0, 0, 0.65);
+    --focus: #E8BB3D;
+
+    --font-display: Rockwell, "Roboto Slab", Georgia, "Times New Roman", serif;
+    --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "Cascadia Code", "SF Mono", ui-monospace, Consolas, "Liberation Mono", monospace;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; }
+
+  button {
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .wrap {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  /* ---------- hero ---------- */
+
+  .hero {
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 18px;
+  }
+
+  .name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(34px, 6vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+
+  .tagline {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin: 0 0 32px;
+  }
+
+  .count-block {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .count-number {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 44px;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .count-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+  }
+
+  .contact-links a {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    border-bottom: 1px solid transparent;
+    padding-bottom: 1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .contact-links a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  /* ---------- toolbar ---------- */
+
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .search-wrap {
+    position: relative;
+    flex: 1 1 220px;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 14px;
+    padding: 10px 14px 10px 34px;
+    border-radius: 3px;
+  }
+
+  .search-wrap input::placeholder {
+    color: var(--ink-faint);
+  }
+
+  .search-wrap::before {
+    content: "";
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    width: 11px;
+    height: 11px;
+    margin-top: -7px;
+    border: 1.5px solid var(--ink-faint);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .search-wrap::after {
+    content: "";
+    position: absolute;
+    left: 21px;
+    top: 50%;
+    width: 6px;
+    height: 1.5px;
+    margin-top: 3px;
+    background: var(--ink-faint);
+    transform: rotate(45deg);
+    transform-origin: left center;
+    pointer-events: none;
+  }
+
+  .filters {
+    display: flex;
+    gap: 6px;
+  }
+
+  .filter-chip {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-radius: 3px;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  .filter-chip:hover {
+    border-color: var(--ink-faint);
+  }
+
+  .filter-chip.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .owner-toolbar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-top: 12px;
+    margin-top: 4px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .owner-toolbar[hidden] { display: none; }
+
+  .owner-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: auto;
+  }
+
+  .owner-tag::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    padding: 8px 12px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: var(--bg-raised);
+    color: var(--ink);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn:hover { border-color: var(--ink-faint); }
+
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+    font-weight: 600;
+  }
+
+  .btn-primary:hover { opacity: 0.92; border-color: var(--accent); }
+
+  .btn-danger {
+    color: var(--status-retired);
+    border-color: var(--status-retired);
+    background: transparent;
+  }
+
+  /* ---------- sections ---------- */
+
+  .section {
+    padding-top: 44px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  .section-count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  .section-note {
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin: 2px 0 18px;
+  }
+
+  .entry-list {
+    border-top: 1px solid var(--line);
+  }
+
+  .entry {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 4px;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.15s;
+  }
+
+  .entry:hover { background: var(--bg-raised); }
+
+  .entry.is-hidden { opacity: 0.45; }
+
+  .entry-mono {
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--ink-soft);
+    background: var(--bg-raised);
+  }
+
+  .entry.is-featured .entry-mono {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .entry-main {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .entry-name-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .entry-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+  }
+
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 2px;
+    border: 1px solid currentColor;
+  }
+
+  .tag-featured {
+    color: var(--accent);
+  }
+
+  .tag-hidden {
+    color: var(--ink-faint);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  .status::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--dot, var(--ink-faint));
+  }
+
+  .entry-tagline {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .entry-domain {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: 4px;
+  }
+
+  .entry-actions {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .visit-btn {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-decoration: none;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    padding: 7px 10px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+
+  .visit-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .icon-btn {
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-soft);
+    font-size: 13px;
+  }
+
+  .icon-btn:hover { border-color: var(--ink-faint); }
+
+  .empty-state {
+    padding: 60px 4px;
+    text-align: left;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+  }
+
+  .empty-state .btn { margin-top: 14px; }
+
+  /* ---------- overlay / panels ---------- */
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 15, 10, 0.45);
+    z-index: 90;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+  }
+
+  .overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(440px, 100%);
+    background: var(--bg-raised);
+    box-shadow: var(--shadow);
+    z-index: 100;
+    transform: translateX(100%);
+    transition: transform 0.22s ease;
+    overflow-y: auto;
+    border-left: 1px solid var(--line);
+  }
+
+  .panel.open { transform: translateX(0); }
+
+  .panel-inner { padding: 28px 26px 60px; }
+
+  .panel-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+
+  .panel-mono {
+    width: 52px;
+    height: 52px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+
+  .panel-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 26px;
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+
+  .panel-domain {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-bottom: 18px;
+  }
+
+  .panel-desc {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    max-width: 60ch;
+  }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 12px;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+    margin-bottom: 26px;
+  }
+
+  .meta-item { min-width: 0; }
+
+  .meta-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+
+  .meta-value {
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  .meta-value.mono { font-family: var(--font-mono); font-size: 13px; }
+
+  .stack-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .stack-chip {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    border: 1px solid var(--line);
+    padding: 2px 7px;
+    border-radius: 2px;
+    color: var(--ink-soft);
+  }
+
+  .panel-visit {
+    display: block;
+    text-align: center;
+    width: 100%;
+    padding: 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    background: var(--accent);
+    color: var(--accent-ink);
+    border-radius: 3px;
+    font-weight: 700;
+  }
+
+  .panel-owner-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  /* ---------- modal (forms) ---------- */
+
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -46%);
+    width: min(520px, calc(100vw - 32px));
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    z-index: 110;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    padding: 28px;
+  }
+
+  .modal.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%);
+  }
+
+  .modal h2 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    margin: 0 0 20px;
+  }
+
+  .field { margin-bottom: 16px; }
+
+  .field label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+
+  .field input[type="text"],
+  .field input[type="url"],
+  .field input[type="date"],
+  .field textarea,
+  .field select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 9px 11px;
+    border-radius: 3px;
+  }
+
+  .field textarea { resize: vertical; min-height: 64px; }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .field-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .field-check label { margin: 0; text-transform: none; letter-spacing: 0; font-size: 13px; }
+
+  .field-hint {
+    font-size: 12px;
+    color: var(--ink-faint);
+    margin-top: 4px;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 22px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+  }
+
+  .modal-small { width: min(400px, calc(100vw - 32px)); }
+
+  .modal p { font-size: 14px; line-height: 1.55; color: var(--ink-soft); }
+
+  .publish-textarea {
+    width: 100%;
+    min-height: 180px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    background: var(--bg-sunken);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 10px;
+    margin: 14px 0;
+    white-space: pre;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: var(--ink);
+    color: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    padding: 10px 18px;
+    border-radius: 4px;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  footer.sitefooter {
+    padding-top: 50px;
+    margin-top: 20px;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-faint);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 620px) {
+    .wrap { padding: 0 18px 80px; }
+    .entry { flex-wrap: wrap; }
+    .entry-actions { width: 100%; justify-content: flex-start; padding-left: 58px; }
+    .meta-grid { grid-template-columns: 1fr; }
+    .field-row { grid-template-columns: 1fr; }
+    .panel { width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <h1 class="name" id="heroName">Oliver Rutland</h1>
+    <p class="tagline" id="heroTagline">Products, client work, and experiments — everything I've built, listed here.</p>
+    <div class="count-block">
+      <span class="count-number" id="liveCount">0</span>
+      <span class="count-label">sites live on the internet</span>
+    </div>
+    <div class="contact-links" id="contactLinks"></div>
+  </header>
+
+  <div class="toolbar">
+    <div class="search-wrap">
+      <input id="searchInput" type="text" placeholder="Search name, domain, stack… ( / )" autocomplete="off" />
+    </div>
+    <div class="filters" id="filterChips">
+      <button class="filter-chip active" data-filter="all">All</button>
+      <button class="filter-chip" data-filter="products">Products</button>
+      <button class="filter-chip" data-filter="client">Client work</button>
+      <button class="filter-chip" data-filter="experiments">Experiments</button>
+    </div>
+    <div class="owner-toolbar" id="ownerToolbar" hidden>
+      <span class="owner-tag">Owner mode</span>
+      <button class="btn btn-primary" id="addBtn">+ Add entry</button>
+      <button class="btn" id="publishBtn">Publish changes</button>
+      <button class="btn" id="backupBtn">Download backup</button>
+      <button class="btn" id="exitOwnerBtn">Exit owner mode</button>
+    </div>
+  </div>
+
+  <main id="sections"></main>
+
+  <footer class="sitefooter">
+    <span id="footerUpdated">—</span>
+    <span>olivers.dev (soon)</span>
+  </footer>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="panel" id="detailPanel" role="dialog" aria-modal="true" aria-labelledby="panelName">
+  <div class="panel-inner">
+    <button class="icon-btn panel-close" id="panelCloseBtn" aria-label="Close">✕</button>
+    <div class="panel-mono" id="panelMono">—</div>
+    <h2 class="panel-name" id="panelName">—</h2>
+    <div class="panel-domain" id="panelDomain">—</div>
+    <p class="panel-desc" id="panelDesc">—</p>
+    <div class="meta-grid" id="panelMetaGrid"></div>
+    <a class="panel-visit" id="panelVisit" href="#" target="_blank" rel="noopener">Visit site ↗</a>
+    <div class="panel-owner-actions" id="panelOwnerActions" hidden>
+      <button class="btn" id="panelEditBtn">Edit</button>
+      <button class="btn btn-danger" id="panelDeleteBtn">Delete</button>
+    </div>
+  </div>
+</aside>
+
+<div class="modal" id="formModal" role="dialog" aria-modal="true" aria-labelledby="formModalTitle">
+  <h2 id="formModalTitle">Add entry</h2>
+  <form id="entryForm">
+    <div class="field">
+      <label for="f-name">Name *</label>
+      <input type="text" id="f-name" required />
+    </div>
+    <div class="field">
+      <label for="f-domain">Website address</label>
+      <input type="text" id="f-domain" placeholder="example.com" />
+      <div class="field-hint">A bare domain gets "https://" added automatically.</div>
+    </div>
+    <div class="field">
+      <label for="f-tagline">One-line description</label>
+      <input type="text" id="f-tagline" />
+    </div>
+    <div class="field">
+      <label for="f-description">Full description</label>
+      <textarea id="f-description"></textarea>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="f-section">Section</label>
+        <select id="f-section">
+          <option value="products">Your products</option>
+          <option value="client">Client work</option>
+          <option value="experiments">Experiments</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="f-status">Status</label>
+        <select id="f-status">
+          <option value="live">Live</option>
+          <option value="building">Building</option>
+          <option value="paused">Paused</option>
+          <option value="retired">Retired</option>
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label for="f-type">Product type</label>
+        <input type="text" id="f-type" placeholder="Chrome extension, SaaS, dev tool…" />
+      </div>
+      <div class="field">
+        <label for="f-launch">Launch date</label>
+        <input type="text" id="f-launch" placeholder="2026-01" />
+      </div>
+    </div>
+    <div class="field">
+      <label for="f-stack">Tech stack</label>
+      <input type="text" id="f-stack" placeholder="Comma-separated: React, Vercel, Postgres" />
+    </div>
+    <div class="field-row" id="clientFieldsRow">
+      <div class="field">
+        <label for="f-businessType">Client's business type</label>
+        <input type="text" id="f-businessType" placeholder="Local restaurant, HVAC contractor…" />
+      </div>
+      <div class="field">
+        <label for="f-builtWhat">What you built for them</label>
+        <input type="text" id="f-builtWhat" placeholder="Booking site, brand refresh…" />
+      </div>
+    </div>
+    <div class="field field-check">
+      <input type="checkbox" id="f-featured" />
+      <label for="f-featured">Featured — always appears first in its section</label>
+    </div>
+    <div class="field field-check">
+      <input type="checkbox" id="f-hidden" />
+      <label for="f-hidden">Hidden from page — you'll still see it here, dimmed</label>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn" id="formCancelBtn">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="formSaveBtn">Save entry</button>
+    </div>
+  </form>
+</div>
+
+<div class="modal modal-small" id="deleteModal" role="dialog" aria-modal="true">
+  <h2>Delete this entry?</h2>
+  <p id="deleteModalText">This removes it for good — there's no undo once you publish.</p>
+  <div class="modal-actions">
+    <button type="button" class="btn" id="deleteCancelBtn">Cancel</button>
+    <button type="button" class="btn btn-danger" id="deleteConfirmBtn">Delete</button>
+  </div>
+</div>
+
+<div class="modal" id="publishModal" role="dialog" aria-modal="true">
+  <h2>Publish changes</h2>
+  <p>Copy this, then paste it into a Claude Code chat and say <em>"update my Oliver's Products portfolio with this."</em> Claude will redeploy the page at this same link.</p>
+  <textarea class="publish-textarea" id="publishPayload" readonly></textarea>
+  <div class="modal-actions">
+    <button type="button" class="btn" id="publishCloseBtn">Close</button>
+    <button type="button" class="btn btn-primary" id="publishCopyBtn">Copy to clipboard</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_DRAFT_KEY = "olivers_products_draft_v1";
+  var STORAGE_OWNER_KEY = "olivers_products_owner_v1";
+
+  var DEFAULT_ENTRIES = [
+    {
+      id: "zipsnap",
+      name: "ZipSnap",
+      domain: "https://getzipsnap.com",
+      tagline: "PLACEHOLDER — replace with the real one-liner.",
+      description: "PLACEHOLDER full description. Swap this out with what ZipSnap actually does, who it's for, and why it exists.",
+      section: "products",
+      status: "live",
+      type: "Chrome extension tool",
+      stack: ["Chrome Extension APIs", "JavaScript"],
+      launchDate: "2025",
+      featured: false,
+      hidden: false
+    },
+    {
+      id: "vibecheck",
+      name: "VibeCheck",
+      domain: "https://vibecheckhq.app",
+      tagline: "PLACEHOLDER — replace with the real one-liner.",
+      description: "PLACEHOLDER full description for VibeCheck.",
+      section: "products",
+      status: "live",
+      type: "SaaS",
+      stack: ["Next.js", "Vercel"],
+      launchDate: "2025",
+      featured: false,
+      hidden: false
+    },
+    {
+      id: "no-crickets",
+      name: "No Crickets",
+      domain: "https://nocrickets.dev",
+      tagline: "PLACEHOLDER — replace with the real one-liner.",
+      description: "PLACEHOLDER full description for No Crickets.",
+      section: "products",
+      status: "live",
+      type: "Dev tool",
+      stack: ["Node.js"],
+      launchDate: "2025",
+      featured: false,
+      hidden: false
+    },
+    {
+      id: "claude-usage-widget",
+      name: "Claude Usage Widget",
+      domain: "https://theclaudeusagewidget.com",
+      tagline: "PLACEHOLDER — replace with the real one-liner.",
+      description: "PLACEHOLDER full description for Claude Usage Widget.",
+      section: "products",
+      status: "live",
+      type: "",
+      stack: [],
+      launchDate: "",
+      featured: false,
+      hidden: false
+    },
+    {
+      id: "niche-loop",
+      name: "Niche Loop",
+      domain: "",
+      tagline: "PLACEHOLDER — replace with the real one-liner and domain once it has one.",
+      description: "PLACEHOLDER full description for Niche Loop.",
+      section: "experiments",
+      status: "building",
+      type: "",
+      stack: [],
+      launchDate: "",
+      featured: false,
+      hidden: false
+    }
+  ];
+
+  var DEFAULT_CONTACT_LINKS = [
+    { label: "email — PLACEHOLDER", href: "mailto:you@example.com" },
+    { label: "github — PLACEHOLDER", href: "https://github.com" }
+  ];
+
+  var SECTIONS = [
+    { key: "products", title: "Your products", note: "" },
+    { key: "client", title: "Client work", note: "Local businesses I've built sites for — doubles as proof I can do the same for you." },
+    { key: "experiments", title: "Experiments & in progress", note: "" }
+  ];
+
+  var STATUS_LABEL = { live: "Live", building: "Building", paused: "Paused", retired: "Retired" };
+
+  var state = {
+    entries: [],
+    isOwner: false,
+    filter: "all",
+    query: "",
+    editingId: null,
+    panelId: null
+  };
+
+  function qs(id) { return document.getElementById(id); }
+
+  function loadEntries() {
+    var params = new URLSearchParams(window.location.search);
+    var keyParam = params.get("key");
+    var ownerFlag = false;
+    try {
+      if (keyParam) {
+        localStorage.setItem(STORAGE_OWNER_KEY, keyParam);
+        ownerFlag = true;
+      } else if (localStorage.getItem(STORAGE_OWNER_KEY)) {
+        ownerFlag = true;
+      }
+    } catch (e) {}
+    state.isOwner = ownerFlag;
+
+    var entries = DEFAULT_ENTRIES;
+    if (state.isOwner) {
+      try {
+        var draft = localStorage.getItem(STORAGE_DRAFT_KEY);
+        if (draft) entries = JSON.parse(draft);
+      } catch (e) {}
+    }
+    state.entries = entries;
+  }
+
+  function saveDraft() {
+    try {
+      localStorage.setItem(STORAGE_DRAFT_KEY, JSON.stringify(state.entries));
+    } catch (e) {}
+  }
+
+  function normalizeDomain(v) {
+    v = (v || "").trim();
+    if (!v) return "";
+    if (!/^https?:\/\//i.test(v)) v = "https://" + v;
+    return v;
+  }
+
+  function domainLabel(url) {
+    if (!url) return "";
+    return url.replace(/^https?:\/\//i, "").replace(/\/$/, "");
+  }
+
+  function monogram(name) {
+    var words = (name || "").replace(/\(.*?\)/g, "").trim().split(/\s+/).filter(Boolean);
+    if (!words.length) return "?";
+    if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+
+  function toast(msg) {
+    var t = qs("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast._h);
+    toast._h = setTimeout(function () { t.classList.remove("show"); }, 2400);
+  }
+
+  function visibleEntries() {
+    return state.entries.filter(function (e) { return state.isOwner || !e.hidden; });
+  }
+
+  function matchesQuery(e, q) {
+    if (!q) return true;
+    q = q.toLowerCase();
+    var hay = [e.name, e.domain, e.tagline, e.description, e.type, e.section, (e.stack || []).join(" ")]
+      .join(" ").toLowerCase();
+    return hay.indexOf(q) !== -1;
+  }
+
+  function matchesFilter(e, filter) {
+    if (filter === "all") return true;
+    return e.section === filter;
+  }
+
+  function render() {
+    renderHero();
+    renderContactLinks();
+    renderOwnerToolbar();
+    renderSections();
+    renderFooter();
+  }
+
+  function renderHero() {
+    var liveCount = state.entries.filter(function (e) { return e.status === "live" && !e.hidden; }).length;
+    qs("liveCount").textContent = liveCount;
+  }
+
+  function renderContactLinks() {
+    var wrap = qs("contactLinks");
+    wrap.innerHTML = "";
+    DEFAULT_CONTACT_LINKS.forEach(function (c) {
+      var a = document.createElement("a");
+      a.href = c.href;
+      a.textContent = c.label;
+      if (/^https?:/.test(c.href)) { a.target = "_blank"; a.rel = "noopener"; }
+      wrap.appendChild(a);
+    });
+  }
+
+  function renderOwnerToolbar() {
+    qs("ownerToolbar").hidden = !state.isOwner;
+  }
+
+  function renderFooter() {
+    qs("footerUpdated").textContent = state.isOwner ? "Owner mode — edits stay local until you publish" : "One link. Always current.";
+  }
+
+  function renderSections() {
+    var container = qs("sections");
+    container.innerHTML = "";
+
+    var q = state.query.trim();
+    var pool = visibleEntries().filter(function (e) {
+      return matchesFilter(e, state.filter) && matchesQuery(e, q);
+    });
+
+    if (!pool.length) {
+      var empty = document.createElement("div");
+      empty.className = "empty-state";
+      empty.innerHTML = "<div>Nothing matches" + (q ? " “" + escapeHtml(q) + "”" : "") + ".</div>";
+      if (q) {
+        var btn = document.createElement("button");
+        btn.className = "btn";
+        btn.textContent = "Clear search";
+        btn.onclick = function () {
+          qs("searchInput").value = "";
+          state.query = "";
+          renderSections();
+        };
+        empty.appendChild(btn);
+      }
+      container.appendChild(empty);
+      return;
+    }
+
+    SECTIONS.forEach(function (sec) {
+      var items = pool.filter(function (e) { return e.section === sec.key; });
+      if (!items.length) return;
+
+      items = items.slice().sort(function (a, b) {
+        return (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+      });
+
+      var secEl = document.createElement("section");
+      secEl.className = "section";
+
+      var head = document.createElement("div");
+      head.className = "section-head";
+      head.innerHTML = '<span class="section-title">' + sec.title + '</span><span class="section-count">' + items.length + '</span>';
+      secEl.appendChild(head);
+
+      if (sec.note) {
+        var note = document.createElement("p");
+        note.className = "section-note";
+        note.textContent = sec.note;
+        secEl.appendChild(note);
+      }
+
+      var list = document.createElement("div");
+      list.className = "entry-list";
+      items.forEach(function (e) { list.appendChild(renderEntryRow(e)); });
+      secEl.appendChild(list);
+
+      container.appendChild(secEl);
+    });
+  }
+
+  function escapeHtml(s) {
+    return (s || "").replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function renderEntryRow(e) {
+    var row = document.createElement("div");
+    row.className = "entry" + (e.featured ? " is-featured" : "") + (e.hidden ? " is-hidden" : "");
+    row.setAttribute("role", "button");
+    row.setAttribute("tabindex", "0");
+    row.dataset.id = e.id;
+
+    var mono = document.createElement("div");
+    mono.className = "entry-mono";
+    mono.textContent = monogram(e.name);
+    row.appendChild(mono);
+
+    var main = document.createElement("div");
+    main.className = "entry-main";
+
+    var nameRow = document.createElement("div");
+    nameRow.className = "entry-name-row";
+
+    var nameEl = document.createElement("span");
+    nameEl.className = "entry-name";
+    nameEl.textContent = e.name;
+    nameRow.appendChild(nameEl);
+
+    if (e.featured) {
+      var ft = document.createElement("span");
+      ft.className = "tag tag-featured";
+      ft.textContent = "Featured";
+      nameRow.appendChild(ft);
+    }
+    if (e.hidden) {
+      var ht = document.createElement("span");
+      ht.className = "tag tag-hidden";
+      ht.textContent = "Hidden";
+      nameRow.appendChild(ht);
+    }
+
+    var st = document.createElement("span");
+    st.className = "status";
+    st.style.setProperty("--dot", "var(--status-" + e.status + ")");
+    st.textContent = STATUS_LABEL[e.status] || e.status;
+    nameRow.appendChild(st);
+
+    main.appendChild(nameRow);
+
+    var tagline = document.createElement("div");
+    tagline.className = "entry-tagline";
+    tagline.textContent = e.tagline || "";
+    main.appendChild(tagline);
+
+    if (e.domain) {
+      var dom = document.createElement("div");
+      dom.className = "entry-domain";
+      dom.textContent = domainLabel(e.domain);
+      main.appendChild(dom);
+    }
+
+    row.appendChild(main);
+
+    var actions = document.createElement("div");
+    actions.className = "entry-actions";
+    if (e.domain) {
+      var visit = document.createElement("a");
+      visit.className = "visit-btn";
+      visit.href = e.domain;
+      visit.target = "_blank";
+      visit.rel = "noopener";
+      visit.textContent = "Visit ↗";
+      visit.onclick = function (ev) { ev.stopPropagation(); };
+      actions.appendChild(visit);
+    }
+    row.appendChild(actions);
+
+    row.addEventListener("click", function () { openDetail(e.id); });
+    row.addEventListener("keydown", function (ev) {
+      if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); openDetail(e.id); }
+    });
+
+    return row;
+  }
+
+  /* ---------- detail panel ---------- */
+
+  function findEntry(id) {
+    return state.entries.filter(function (e) { return e.id === id; })[0];
+  }
+
+  function openDetail(id) {
+    var e = findEntry(id);
+    if (!e) return;
+    state.panelId = id;
+
+    qs("panelMono").textContent = monogram(e.name);
+    qs("panelName").textContent = e.name;
+    qs("panelDomain").textContent = e.domain ? domainLabel(e.domain) : "No domain yet";
+    qs("panelDesc").textContent = e.description || e.tagline || "";
+
+    var grid = qs("panelMetaGrid");
+    grid.innerHTML = "";
+    addMeta(grid, "Type", e.type || "—");
+    addMeta(grid, "Status", STATUS_LABEL[e.status] || e.status);
+    addMeta(grid, "Launched", e.launchDate || "—");
+    if (e.section === "client") {
+      addMeta(grid, "Business type", e.businessType || "—");
+      addMeta(grid, "Built", e.builtWhat || "—");
+    }
+    if (e.stack && e.stack.length) {
+      var item = document.createElement("div");
+      item.className = "meta-item";
+      var label = document.createElement("div");
+      label.className = "meta-label";
+      label.textContent = "Stack";
+      item.appendChild(label);
+      var chips = document.createElement("div");
+      chips.className = "stack-chips";
+      e.stack.forEach(function (s) {
+        var chip = document.createElement("span");
+        chip.className = "stack-chip";
+        chip.textContent = s;
+        chips.appendChild(chip);
+      });
+      item.appendChild(chips);
+      grid.appendChild(item);
+    }
+
+    var visitBtn = qs("panelVisit");
+    if (e.domain) {
+      visitBtn.href = e.domain;
+      visitBtn.style.display = "";
+    } else {
+      visitBtn.style.display = "none";
+    }
+
+    qs("panelOwnerActions").hidden = !state.isOwner;
+
+    openPanel();
+  }
+
+  function addMeta(grid, label, value) {
+    var item = document.createElement("div");
+    item.className = "meta-item";
+    item.innerHTML = '<div class="meta-label">' + label + '</div><div class="meta-value">' + escapeHtml(value) + '</div>';
+    grid.appendChild(item);
+  }
+
+  function openPanel() {
+    qs("overlay").classList.add("open");
+    qs("detailPanel").classList.add("open");
+  }
+
+  function closeAllOverlays() {
+    qs("overlay").classList.remove("open");
+    qs("detailPanel").classList.remove("open");
+    qs("formModal").classList.remove("open");
+    qs("deleteModal").classList.remove("open");
+    qs("publishModal").classList.remove("open");
+    state.panelId = null;
+  }
+
+  /* ---------- add / edit form ---------- */
+
+  function openForm(id) {
+    state.editingId = id || null;
+    var e = id ? findEntry(id) : null;
+
+    qs("formModalTitle").textContent = e ? "Edit entry" : "Add entry";
+    qs("f-name").value = e ? e.name : "";
+    qs("f-domain").value = e ? domainLabel(e.domain) : "";
+    qs("f-tagline").value = e ? e.tagline || "" : "";
+    qs("f-description").value = e ? e.description || "" : "";
+    qs("f-section").value = e ? e.section : "products";
+    qs("f-status").value = e ? e.status : "live";
+    qs("f-type").value = e ? e.type || "" : "";
+    qs("f-launch").value = e ? e.launchDate || "" : "";
+    qs("f-stack").value = e && e.stack ? e.stack.join(", ") : "";
+    qs("f-businessType").value = e ? e.businessType || "" : "";
+    qs("f-builtWhat").value = e ? e.builtWhat || "" : "";
+    qs("f-featured").checked = !!(e && e.featured);
+    qs("f-hidden").checked = !!(e && e.hidden);
+
+    toggleClientFields();
+    qs("overlay").classList.add("open");
+    qs("formModal").classList.add("open");
+    qs("f-name").focus();
+  }
+
+  function toggleClientFields() {
+    qs("clientFieldsRow").style.display = qs("f-section").value === "client" ? "grid" : "none";
+  }
+
+  function slugify(name) {
+    var base = (name || "entry").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    var id = base || "entry";
+    var n = 1;
+    while (findEntry(id)) { id = base + "-" + (++n); }
+    return id;
+  }
+
+  function handleFormSubmit(ev) {
+    ev.preventDefault();
+    var name = qs("f-name").value.trim();
+    if (!name) { qs("f-name").focus(); return; }
+
+    var payload = {
+      name: name,
+      domain: normalizeDomain(qs("f-domain").value),
+      tagline: qs("f-tagline").value.trim(),
+      description: qs("f-description").value.trim(),
+      section: qs("f-section").value,
+      status: qs("f-status").value,
+      type: qs("f-type").value.trim(),
+      launchDate: qs("f-launch").value.trim(),
+      stack: qs("f-stack").value.split(",").map(function (s) { return s.trim(); }).filter(Boolean),
+      businessType: qs("f-businessType").value.trim(),
+      builtWhat: qs("f-builtWhat").value.trim(),
+      featured: qs("f-featured").checked,
+      hidden: qs("f-hidden").checked
+    };
+
+    if (state.editingId) {
+      var existing = findEntry(state.editingId);
+      Object.assign(existing, payload);
+    } else {
+      payload.id = slugify(name);
+      state.entries.push(payload);
+    }
+
+    saveDraft();
+    closeAllOverlays();
+    render();
+    toast(state.editingId ? "Entry updated (draft — publish to go live)" : "Entry added (draft — publish to go live)");
+  }
+
+  function openDeleteConfirm(id) {
+    var e = findEntry(id);
+    if (!e) return;
+    state.editingId = id;
+    qs("deleteModalText").textContent = 'Delete "' + e.name + '"? This removes it for good once you publish.';
+    qs("overlay").classList.add("open");
+    qs("deleteModal").classList.add("open");
+  }
+
+  function confirmDelete() {
+    var id = state.editingId;
+    state.entries = state.entries.filter(function (e) { return e.id !== id; });
+    saveDraft();
+    closeAllOverlays();
+    render();
+    toast("Entry deleted (draft — publish to go live)");
+  }
+
+  /* ---------- publish / backup ---------- */
+
+  function buildPublishPayload() {
+    return JSON.stringify(state.entries, null, 2);
+  }
+
+  function openPublish() {
+    qs("publishPayload").value = buildPublishPayload();
+    qs("overlay").classList.add("open");
+    qs("publishModal").classList.add("open");
+  }
+
+  function copyPublishPayload() {
+    var text = qs("publishPayload").value;
+    var done = function () { toast("Copied — paste it into Claude Code to publish"); };
+    var fail = function () { qs("publishPayload").select(); toast("Couldn't auto-copy — text is selected, use Ctrl/Cmd+C"); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, fail);
+    } else {
+      fail();
+    }
+  }
+
+  function downloadBackup() {
+    var blob = new Blob([buildPublishPayload()], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "olivers-products-backup.json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    toast("Backup downloaded");
+  }
+
+  function exitOwnerMode() {
+    try { localStorage.removeItem(STORAGE_OWNER_KEY); } catch (e) {}
+    var url = new URL(window.location.href);
+    url.searchParams.delete("key");
+    window.location.href = url.toString();
+  }
+
+  /* ---------- events ---------- */
+
+  function bindEvents() {
+    qs("searchInput").addEventListener("input", function (ev) {
+      state.query = ev.target.value;
+      renderSections();
+    });
+
+    qs("filterChips").addEventListener("click", function (ev) {
+      var btn = ev.target.closest(".filter-chip");
+      if (!btn) return;
+      state.filter = btn.dataset.filter;
+      Array.prototype.forEach.call(qs("filterChips").children, function (c) {
+        c.classList.toggle("active", c === btn);
+      });
+      renderSections();
+    });
+
+    qs("overlay").addEventListener("click", closeAllOverlays);
+    qs("panelCloseBtn").addEventListener("click", closeAllOverlays);
+
+    qs("addBtn").addEventListener("click", function () { openForm(null); });
+    qs("formCancelBtn").addEventListener("click", closeAllOverlays);
+    qs("entryForm").addEventListener("submit", handleFormSubmit);
+    qs("f-section").addEventListener("change", toggleClientFields);
+
+    qs("panelEditBtn").addEventListener("click", function () { openForm(state.panelId); });
+    qs("panelDeleteBtn").addEventListener("click", function () { openDeleteConfirm(state.panelId); });
+
+    qs("deleteCancelBtn").addEventListener("click", closeAllOverlays);
+    qs("deleteConfirmBtn").addEventListener("click", confirmDelete);
+
+    qs("publishBtn").addEventListener("click", openPublish);
+    qs("publishCloseBtn").addEventListener("click", closeAllOverlays);
+    qs("publishCopyBtn").addEventListener("click", copyPublishPayload);
+    qs("backupBtn").addEventListener("click", downloadBackup);
+    qs("exitOwnerBtn").addEventListener("click", exitOwnerMode);
+
+    document.addEventListener("keydown", function (ev) {
+      if (ev.key === "Escape") { closeAllOverlays(); return; }
+      if (ev.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
+        ev.preventDefault();
+        qs("searchInput").focus();
+      }
+    });
+  }
+
+  loadEntries();
+  bindEvents();
+  render();
+})();
+</script>
